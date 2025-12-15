@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Railway Ticket Booking</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>Railway Ticket Booking Website</h2>
+
+<label>Select Train:</label><br>
+<select id="train">
+    {% for no, t in trains.items() %}
+    <option value="{{ no }}">
+        {{ no }} - {{ t.name }} (Seats: {{ t.seats }})
+    </option>
+    {% endfor %}
+</select>
+
+<br><br>
+
+<input type="text" id="name" placeholder="Passenger Name">
+<br><br>
+<input type="number" id="age" placeholder="Age">
+<br><br>
+
+<button onclick="bookTicket()">Book Ticket</button>
+
+<h3 id="result"></h3>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
