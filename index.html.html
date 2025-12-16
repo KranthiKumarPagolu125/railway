@@ -2,32 +2,30 @@
 <html>
 <head>
     <title>Railway Ticket Booking</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<h2>Railway Ticket Booking Website</h2>
+<div class="container">
+    <h2>🚆 Railway Ticket Booking</h2>
 
-<label>Select Train:</label><br>
-<select id="train">
-    {% for no, t in trains.items() %}
-    <option value="{{ no }}">
-        {{ no }} - {{ t.name }} (Seats: {{ t.seats }})
-    </option>
-    {% endfor %}
-</select>
+    <select id="train">
+        {% for no, t in trains.items() %}
+        <option value="{{ no }}">
+            {{ t.name }} ({{ t.from }} → {{ t.to }}) - ₹{{ t.fare }}
+        </option>
+        {% endfor %}
+    </select>
 
-<br><br>
+    <button onclick="bookTicket()">Book Ticket</button>
 
-<input type="text" id="name" placeholder="Passenger Name">
-<br><br>
-<input type="number" id="age" placeholder="Age">
-<br><br>
+    <p id="result"></p>
+</div>
 
-<button onclick="bookTicket()">Book Ticket</button>
+<script>
+    var trains = {{ trains | tojson }};
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
-<h3 id="result"></h3>
-
-<script src="/static/script.js"></script>
 </body>
 </html>
