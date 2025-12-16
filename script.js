@@ -1,13 +1,13 @@
 function bookTicket() {
+    var trainNo = document.getElementById("train").value;
+
     fetch("/book", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            train_no: document.getElementById("train").value,
-            name: document.getElementById("name").value,
-            age: document.getElementById("age").value
+            train_no: trainNo
         })
     })
     .then(response => response.json())
@@ -15,8 +15,13 @@ function bookTicket() {
         if (data.error) {
             document.getElementById("result").innerText = data.error;
         } else {
-            document.getElementById("result").innerText =
-                "Ticket Booked Successfully! PNR: " + data.pnr;
+            document.getElementById("result").innerHTML =
+                "✅ Ticket Booked<br>" +
+                "Train: " + data.train + "<br>" +
+                "Fare: ₹" + data.fare + "<br>" +
+                "PNR: " + data.pnr;
         }
     });
 }
+
+
