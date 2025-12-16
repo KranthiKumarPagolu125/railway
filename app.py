@@ -3,12 +3,23 @@ import random
 
 app = Flask(__name__)
 
+# Train data
 trains = {
-    101: {"name": "Rajdhani Express", "seats": 5},
-    102: {"name": "Shatabdi Express", "seats": 5}
+    101: {
+        "name": "Tirupathi Express",
+        "from": "Vijayawada",
+        "to": "Tirupathi",
+        "fare": 450,
+        "seats": 5
+    },
+    102: {
+        "name": "Godavari Express",
+        "from": "Visakhapatnam",
+        "to": "Hyderabad",
+        "fare": 750,
+        "seats": 5
+    }
 }
-
-tickets = {}
 
 def generate_pnr():
     return "PNR" + str(random.randint(10000, 99999))
@@ -19,25 +30,20 @@ def home():
 
 @app.route("/book", methods=["POST"])
 def book_ticket():
-    data = request.json
+    data = request.get_json()
     train_no = int(data["train_no"])
-    name = data["name"]
-    age = data["age"]
 
     if trains[train_no]["seats"] <= 0:
         return jsonify({"error": "No seats available"})
 
-    pnr = generate_pnr()
-    tickets[pnr] = {
-        "name": name,
-        "age": age,
-        "train": trains[train_no]["name"]
-    }
     trains[train_no]["seats"] -= 1
 
-    return jsonify({"pnr": pnr})
+    return jsonify({
+        "pnr": generate_pnr(),
+        "fare": trains[train_no]["fare"],
+        "train": trains[train_no]["name"]
+    })
 
 if __name__ == "__main__":
-    print("Starting Railway Ticket App...")
-    app.run(host="127.0.0.1", port=5000, debug=True)
-
+    print("Starting Flask app...")
+    app.run(debug=True)
